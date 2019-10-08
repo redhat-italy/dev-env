@@ -1,0 +1,7 @@
+---
+ntp_server: "{{ lookup('env', 'new_ntp') }}"
+rhs_user: "{{ lookup('env', 'rhs_user') }}"
+rhs_pass: "{{ lookup('env', 'rhs_pass') }}"
+domain_nip_io: "{{hostvars[inventory_hostname]['ansible_default_ipv4']['address']}}.nip.io"
+router_suffix: "apps.{{ domain_nip_io }}"
+openshift_version: "{{ lookup('env', 'openshift_version') }}"

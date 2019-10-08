@@ -1,0 +1,24 @@
+---
+- name: create temp dir for addons
+  tempfile:
+    state: directory
+  register: builddir_1
+  tags: addons
+
+- name: create template addons
+  template:
+    src: "{{ item }}"
+    dest: "{{ builddir_1['path'] }}/{{ item | basename }}"
+  with_items: '{{ (role_path + "/files/*/*.addon") | fileglob }}'
+  tags: addons
+
+- name: run addons
+  shell: |
+    for i in $(ls {{ builddir_1['path'] }}/*.addon) ; do sh $i ; done
+  tags: addons
+
+#- name: remove temporary directory
+#  file:
+#    path: "{{ builddir_1['path'] }}"
+#    state: absent
+#  tags: addons

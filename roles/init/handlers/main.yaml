@@ -1,0 +1,12 @@
+---
+- name: restart chrony
+  service:
+    name: chronyd
+    state: restarted
+  tags: ntp,packages,clusterup
+
+- name: restart docker
+  service:
+    name: docker
+    state: restarted
+  tags: docker,packages,clusterup

@@ -1,0 +1,43 @@
+# Name: registry-route
+# Description: Create an edge terminated route for the OpenShift registry
+# URL: https://docs.okd.io/latest/install_config/registry/securing_and_exposing_registry.html
+
+echo  "-- Create secret directory"
+mkdir -p /root/openshift.local.clusterup/secrets
+chown root /root/openshift.local.clusterup/secrets
+
+echo  "-- Creating server cert"
+oc adm ca create-server-cert --signer-cert=/root/openshift.local.clusterup/openshift-apiserver/ca.crt --signer-key=/root/openshift.local.clusterup/openshift-apiserver/ca.key --signer-serial=/root/openshift.local.clusterup/openshift-apiserver/ca.serial.txt --hostnames='docker-registry-default.{{router_suffix}},docker-registry-default.{{router_suffix}}:443,docker-registry.default.svc.cluster.local,172.30.1.1' --cert=/root/openshift.local.clusterup/secrets/registry.crt --key=/root/openshift.local.clusterup/secrets/registry.key
+
+echo  "-- Creating the secret for the registry certificates"
+oc create secret generic registry-certificates --from-file=/root/openshift.local.clusterup/secrets/registry.crt --from-file=/root/openshift.local.clusterup/secrets/registry.key -n default
+
+echo  "-- Adding the secret to the registry pod’s service accounts (including the default service account)"
+oc secrets link registry registry-certificates -n default --as system:admin
+oc secrets link default registry-certificates -n default --as system:admin
+
+echo  "-- Pausing the docker-registry service"
+oc rollout pause dc/docker-registry -n default --as system:admin
+
+echo  "-- Adding the secret volume to the registry deployment configuration"
+oc set volume dc/docker-registry --add --type=secret --secret-name=registry-certificates -m /etc/secrets -n default --as system:admin
+
+echo  "-- Enabling TLS by adding the environment variables to the registry deployment configuration"
+oc set env dc/docker-registry REGISTRY_HTTP_TLS_CERTIFICATE=/etc/secrets/registry.crt REGISTRY_HTTP_TLS_KEY=/etc/secrets/registry.key -n default --as system:admin
+
+echo  "-- Updating the scheme used for the registry’s liveness probe from HTTP to HTTPS"
+oc patch dc/docker-registry -p '{"spec": {"template": {"spec": {"containers":[{"name":"registry","livenessProbe":  {"httpGet": {"scheme":"HTTPS"}}}]}}}}' -n default --as system:admin
+
+echo  "-- Updating the scheme used for the registry’s readiness probe from HTTP to HTTPS"
+oc patch dc/docker-registry -p '{"spec": {"template": {"spec": {"containers":[{"name":"registry","readinessProbe":  {"httpGet": {"scheme":"HTTPS"}}}]}}}}' -n default --as system:admin
+
+echo  "-- Resuming the docker-registry service"
+oc rollout resume dc/docker-registry -n default --as system:admin
+
+echo  "-- Creating passthrough route for docker-registry service"
+oc create route passthrough --service=docker-registry --hostname=docker-registry-default.{{router_suffix}} -n default --as system:admin
+
+mkdir -p /etc/docker/certs.d/docker-registry-default.{{router_suffix}}
+chown root /etc/docker/certs.d/docker-registry-default.{{router_suffix}}
+
+docker cp origin:/var/lib/origin/openshift.local.config/master/ca.crt /etc/docker/certs.d/docker-registry-default.{{router_suffix}}/ca.crt
