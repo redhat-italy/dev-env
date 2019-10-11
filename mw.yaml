@@ -3,6 +3,7 @@
   connection: local
   roles:
     - role: gantsign.maven
+      maven_version: '3.6.2'
     - role: nwoetzel.eclipse
       eclipse_distro: photon
 
