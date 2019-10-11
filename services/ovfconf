@@ -220,7 +220,7 @@ if [[ -z $new_ip ]]; then
   exit 1
 fi
 
-if [[ $new_ip == $old_ip && $new_prefix == $old_prefix ]]; then
+if [[ $new_ip == $old_ip && $new_prefix == $old_prefix && $new_dns == $old_dns ]]; then
   log_msg "ERROR: new ip/prefix are the same as old ($new_ip/$new_prefix), exiting"
   exit 1
 fi
@@ -257,7 +257,6 @@ log_msg "INFO:  changing $ETC/hosts"
 cat > $ETC/hosts <<EOF
 127.0.0.1      localhost
 
-$old_ip        $old_hostname $old_hostname.$old_domain
 $new_ip        $new_hostname $new_hostname.$new_domain
 EOF
 
@@ -271,6 +270,9 @@ perl -pi -e 's/^root:x:0:0:[^:]+:/root:x:0:0:root\@$ENV{new_hostname}:/' $ETC/pa
 log_msg "NOTE: chainging main ip to $new_ip"
 log_msg "INFO:  changing $if0 config"
 perl -pi -e 's/IPADDR=(\W?)[0-9.]+/IPADDR=\1$ENV{new_ip}/' $iface_conf
+log_msg "NOTE: chainging prefix to $new_prefix"
+log_msg "INFO:  changing $if0 config"
+perl -pi -e 's/PREFIX=(\W?)([0-9.]+)/PREFIX=\1$ENV{new_prefix}/' $iface_conf
 if [[ ! -z $CLEAN_IFACE_MAC && $CLEAN_IFACE_MAC == "yes" && ! -z $old_iface_mac ]]; then
   # new is present in ovf EthernetAdapterSection, but lets clean it
   log_msg "INFO:  cleaning old MAC from iface config"
@@ -351,7 +353,7 @@ if [[ $new_domain != $old_domain || (! -z $new_dns && $new_dns != $old_dns) ]]; 
   new_dns2=$(echo $new_dns | awk -F"[, ;]+" '{print $2}')
   log_msg "NOTE: setting $resolv_conf DNS to $new_dns"
   echo "domain $new_domain"   >  $resolv_conf
-  echo "search $new_domain"   >> $resolv_conf
+  echo "search cluster.local $new_domain"   >> $resolv_conf
   echo "nameserver $new_dns1" >> $resolv_conf
   if [[ ! -z $new_dns2 ]]; then
     echo "nameserver $new_dns2" >> $resolv_conf
