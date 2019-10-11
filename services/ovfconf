@@ -159,6 +159,8 @@ fi
 export old_hostname=$(cat $hostname_conf | cut -d. -f1)
 export old_domain=$(cat $hostname_conf | cut -d. -f2-)
 export old_ip=$(cat $iface_conf | perl -ne 'print $2 if /IPADDR=(\W?)([0-9.]+)/')
+export old_prefix=$(cat $iface_conf | perl -ne 'print $2 if /PREFIX=(\W?)([0-9.]+)/')
+
 if [[ ! -z $route_conf ]]; then
   export old_gw=$(cat $route_conf | grep 'default' | cut -d' ' -f2)
 else
@@ -192,6 +194,7 @@ fi
 export new_hostname=$(get_ovf_var "hostname")
 export new_domain=$(get_ovf_var "domain")
 export new_ip=$(get_ovf_var "ip")
+export new_prefix=$(get_ovf_var "prefix")
 export new_gw=$(get_ovf_var "gateway")
 export new_dns=$(get_ovf_var "dns")
 export new_ntp=$(get_ovf_var "ntp")
@@ -212,18 +215,13 @@ if [[ "X$new_hostname" == "X" ]]; then
   exit 0
 fi
 
-if [[ "$new_hostname.$new_domain" == "$old_hostname.$old_domain" ]]; then
-  log_msg "INFO: hostname unchanged ($new_hostname.$new_domain), nothing to do"
-  exit 0
-fi
-
 if [[ -z $new_ip ]]; then
   log_msg "ERROR: new ip is not found, exiting"
   exit 1
 fi
 
-if [[ $new_ip == $old_ip ]]; then
-  log_msg "ERROR: new ip is same as old ($new_ip), exiting"
+if [[ $new_ip == $old_ip && $new_prefix == $old_prefix ]]; then
+  log_msg "ERROR: new ip/prefix are the same as old ($new_ip/$new_prefix), exiting"
   exit 1
 fi
 
@@ -242,7 +240,7 @@ log_msg "INFO: old ntp:  $old_ntp"
 log_msg "INFO: old log:  $old_syslog"
 log_msg "INFO: old smtp: $old_relay"
 log_msg "INFO: new name: $new_hostname.$new_domain"
-log_msg "INFO: new ip:   $new_ip, gw: $new_gw"
+log_msg "INFO: new ip/prefix:   $new_ip/$new_prefix, gw: $new_gw"
 [[ ! -z $new_dns ]] && log_msg "INFO: new dns:  $new_dns"
 [[ ! -z $new_ntp ]] && log_msg "INFO: new ntp:  $new_ntp"
 [[ ! -z $new_syslog ]] && log_msg "INFO: new log:  $new_syslog"
