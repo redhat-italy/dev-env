@@ -1,0 +1,2 @@
+[eclipse-oxygen-testing]
+localhost ansible_connection=local

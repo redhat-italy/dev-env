@@ -1,0 +1,2 @@
+[eclipse-neon-scala]
+localhost ansible_connection=local

@@ -1,0 +1,2 @@
+[eclipse-neon-php]
+localhost ansible_connection=local

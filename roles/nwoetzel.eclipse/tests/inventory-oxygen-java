@@ -1,0 +1,2 @@
+[eclipse-oxygen-java]
+localhost ansible_connection=local

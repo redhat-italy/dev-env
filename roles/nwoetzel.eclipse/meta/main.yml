@@ -1,0 +1,34 @@
+---
+galaxy_info:
+  author: Nils Woetzel
+  description: Installer for eclipse of different distro-package combination and with selected plugins.
+  company: HITS gGmbH, Heidelberg, Germany
+  license: GPLv3
+  min_ansible_version: 2.4.3
+  platforms:
+  - name: Ubuntu
+    versions:
+    - all
+  - name: Debian
+    versions:
+    - all
+  - name: EL
+    versions:
+    - "6"
+    - "7"
+  galaxy_tags:
+    - ide
+    - eclipse
+    - development
+dependencies:
+  - name: GROG.package
+    version: v1.2.4
+    become: yes
+    package_list:
+      - name: libwebkitgtk-3.0-0
+        yum_ignore: yes
+      - name: libcanberra-gtk-module # for sound?
+        yum_ignore: yes
+      - name: libcanberra-gtk3-module
+        yum_ignore: yes
+      - "{{ package_list_eclipse }}"

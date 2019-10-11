@@ -1,0 +1,323 @@
+---
+eclipse_defaults:
+  tags: [always]
+  url: "http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release"
+  archmap:
+    x86_64: "x86_64"
+    i586:   ""
+  osmap:
+    Linux: linux
+    MacOS: macos
+  guimap:
+    Linux: "gtk"
+    MacOS: "cocoa"
+    Win32: ""
+  settings_subfolder: "configuration/.settings"
+  # located in settings subfolder
+  ui_id_prefs_filename: "org.eclipse.ui.ide.prefs"
+  distros:
+    # https://de.wikipedia.org/wiki/Eclipse_(IDE)
+    europa:
+      version: 3.3
+      latest_service_release: winter
+      packages: [jee, java, rcp, cpp]
+    ganymede:
+      version: 3.4
+      latest_service_release: SR2
+      packages: [jee, java, cpp, reporting, rcp]
+    galileo:
+      version: 3.5
+      latest_service_release: SR2
+      packages: [cpp, java, php, jee, rcp, reporting, pulsar]
+    helios:
+      version: 3.6
+      latest_service_release: SR2
+      packages: [jee, javascript, cpp, php, java, rcp, reporting, pulsar]
+    indigo:
+      version: 3.7
+      latest_service_release: SR2
+      packages: [jee, java, javascript, modeling, reportingrcp, testing, scout]
+    juno:
+      version: 4.2
+      latest_service_release: SR2
+      packages: [jee, java, cpp, mobile, dsl, reporting, modeling, rcp, testing, parallel, scout]
+    kepler:
+      version: 4.3
+      latest_service_release: SR2
+      packages: [standard, jee, java, cpp, mobile, dsl, rcp, testing, reporting, parallel, scout]
+    luna:
+      version: 4.4
+      latest_service_release: SR2
+      packages: [jee, java, cpp, php, standard, dsl, reporting, rcp, modeling, parallel, testing, scout]
+    mars:
+      version: 4.5
+      latest_service_release: 2
+      packages: [jee, java, cpp, php, committers, rcp, dsl, modeling, reporting, parallel, scout, testing]
+    neon:
+      version: 4.6
+      latest_service_release: 3
+      packages: [jee, java, cpp, android, php, committers, modeling, reporting, rcp, testing, parallel, scout]
+    oxygen:
+      version: 4.7
+      latest_service_release: 3a
+      packages: [jee, java, cpp, android, committers, javascript, dsl, testing, rcp, parallel, modeling, scout]
+    photon:
+      version: 4.8
+      latest_service_release: R
+      packages: [jee, java, cpp, committers, javascript, dsl, testing, rcp, parallel, modeling, php, reporting, scout]
+    '2019-03':
+      version: 4.11
+      latest_service_release: R
+      packages: [jee, java, cpp, committers, javascript, dsl, testing, rcp, parallel, modeling, php, reporting, scout]
+  plugins:
+    aptana_studio:
+      repositories:
+#        - "http://download.aptana.com/studio3/plugin/install"
+        - "http://studio-jenkins.appcelerator.org/job/studio3-feature-development/lastSuccessfulBuild/artifact/dist/"
+      install_units:
+        - com.aptana.feature.feature.group
+        - com.aptana.feature.studio.feature.group
+        - com.aptana.php.feature.feature.group
+        - org.radrails.rails.feature.group
+      creates_feature: com.aptana.feature
+    emf:
+      repositories:
+        - "http://download.eclipse.org/tools/orbit/downloads/drops/S20110515001817/repository/"
+        - "http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site"
+        - "http://eclipse-cs.sf.net/update/"
+        - "jar:file:org.eclipse.releng.tools-3.7M7.zip"
+      install_units:
+        - org.eclipse.birt.feature.group
+        - org.eclipse.mylyn.wikitext_feature.feature.group
+        - org.eclipse.acceleo.sdk.feature.group
+        - org.eclipse.m2m.atl.sdk.feature.group
+        - org.eclipse.emf.cdo.sdk.feature.group
+        - org.eclipse.emf.ecoretools.sdk.feature.group
+        - org.eclipse.emf.sdk.feature.group
+        - org.eclipse.emf.compare.sdk.feature.group
+        - org.eclipse.emf.query.sdk.feature.group
+        - org.eclipse.emf.validation.sdk.feature.group
+        - org.eclipse.jet.sdk.feature.group
+        - org.eclipse.net4j.sdk.feature.group
+        - org.eclipse.ocl.all.sdk.feature.group
+        - org.eclipse.m2m.qvt.oml.sdk.feature.group
+        - org.eclipse.uml2.sdk.feature.group
+        - org.antlr.runtime
+        - org.apache.derby
+        - org.apache.derby.source
+        - org.apache.log4j
+        - org.apache.log4j.source
+        - org.apache.commons.lang
+        - org.apache.commons.lang.source
+        - org.apache.commons.jxpath
+        - org.apache.commons.jxpath.source
+        - net.sourceforge.nattable.core
+        - net.sourceforge.nattable.core.source
+        - org.prefuse
+        - org.prefuse.source
+        - org.eclipse.releng.tools.feature.group
+        - org.eclipse.swtbot.eclipse.feature.group
+        - org.eclipse.swtbot.feature.group
+        - net.sf.eclipsecs.feature.group
+      creates_feature: org.eclipse.emf
+    cdt:
+      repositories:
+        - "http://download.eclipse.org/tools/cdt/releases/helios/"
+      install_units:
+        - org.eclipse.cdt.feature.group
+        - org.eclipse.cdt.sdk.feature.group
+        - org.eclipse.cdt.platform.feature.group
+        - org.eclipse.cdt.debug.ui.memory.feature.group
+        - org.eclipse.cdt.debug.edc.feature.group
+        - org.eclipse.cdt.util.feature.group
+      creates_feature: com.cthing.cmakeed
+    cmakeed:
+      repositories:
+        - "https://raw.githubusercontent.com/15knots/cmakeed/master/cmakeed-update/"
+      install_units:
+        - com.cthing.cmakeed.feature.feature.group
+      creates_feature: com.cthing.cmakeed
+    cmake4eclipse:
+      repositories:
+        - "https://raw.githubusercontent.com/15knots/cmake4eclipse/master/releng/comp-update/"
+      install_units:
+        - de.marw.cdt.cmake.feature.group
+      creates_feature: de.marw.cdt.cmake
+    cmake_helper:
+      repositories:
+        - "http://cmake-helper.eu/releases/1.0"
+      install_units:
+        - nl.usetechnology.cmake.feature.feature.group
+      creates_feature: nl.usetechnology.cmake
+    protobuf:
+      repositories:
+        - "http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"
+        - "http://protobuf-dt.googlecode.com/git/update-site"
+      install_units:
+        - com.google.eclipse.protobuf.feature.group
+      creates_feature: com.google.eclipse.protobuf
+    yedit:
+      repositories:
+        - "http://dadacoalition.org/yedit"
+      install_units:
+        - org.dadacoalition.yedit.feature.feature.group
+      creates_feature: org.dadacoalition.yedit
+    shelled:
+      repositories:
+        - "http://download.eclipse.org/technology/dltk/updates/"
+        - "https://sourceforge.net/projects/shelled/files/shelled/update/"
+      install_units:
+        - net.sourceforge.shelled.feature.group
+      creates_feature: net.sourceforge.shelled
+    webpageed:
+      repositories:
+        - "http://download.eclipse.org/technology/dltk/updates/"
+        - "https://sourceforge.net/projects/shelled/files/shelled/update/"
+      install_units:
+        - org.eclipse.jst.webpageeditor.feature.feature.group
+      creates_feature: org.eclipse.jst.webpageeditor
+    pydev:
+      repositories:
+        - "http://download.eclipse.org/technology/dltk/updates/"
+        - "http://pydev.org/updates/"
+      install_units:
+        - org.python.pydev.feature.feature.group
+      creates_feature: org.python.pydev
+    m2e:
+      repositories:
+        - "http://download.eclipse.org/technology/m2e/releases/1.5/1.5.0.20140606-0033"
+      install_units:
+        - org.eclipse.m2e.feature.feature.group,org.eclipse.m2e.logback.feature.feature.group
+      creates_feature: org.eclipse.m2e
+    subclipse:
+      repositories:
+        - http://subclipse.tigris.org/update_1.10.x
+      install_units:
+        - org.tigris.subversion.subclipse.feature.group
+        - org.tigris.subversion.clientadapter.feature.feature.group
+        - org.tigris.subversion.clientadapter.svnkit.feature.feature.group
+        - org.tigris.subversion.clientadapter.javahl.feature.feature.group
+        - org.tigris.subversion.subclipse.graph.feature.feature.group
+      creates_feature: org.tigris.subversion.subclipse
+    egit:
+      repositories:
+        - "http://download.eclipse.org/egit/updates"
+      install_units:
+        - "org.eclipse.egit.feature.group"
+        - "org.eclipse.egit.mylyn.feature.group"
+      creates_feature: org.eclipse.egit
+    scala:
+      repositories:
+#        - "http://download.scala-ide.org/sdk/lithium/e44/scala211/stable/site"
+        - "http://download.scala-ide.org/sdk/lithium/e46/scala211/stable/site"
+      install_units:
+        - org.scala-ide.play2.feature.feature.group
+#        - org.scala-ide.sbt.feature.feature.group
+        - org.scala-ide.scala211.feature.feature.group
+        - org.scala-ide.sdt.feature.feature.group
+        - org.scala.tools.eclipse.search.feature.feature.group
+        - org.scalaide.worksheet.feature.feature.group
+        - org.scala-ide.sdt.scalatest.feature.feature.group
+      creates_feature: org.scala-ide
+    redmine_mylyn:
+      repositories:
+        - "jar:https://github.com/ljader/redmine-mylyn-plugin/releases/download/release-0.4.0.201602071631/net.sf.redmine_mylyn.p2repository-0.4.0.201602071631.zip!/"
+        # requires 'bundle org.slf4j.api [1.6.1,1.7.0)
+        - "http://download.eclipse.org/releases/indigo/"
+      install_units:
+        - net.sf.redmine_mylyn.feature.feature.group
+      creates_feature: net.sf.redmine_mylyn
+    symfony:
+      repositories:
+        - "http://p2.pdt-extensions.org"
+      install_units:
+        - com.dubture.composer.feature.feature.group
+        - com.dubture.symfony.feature.feature.group
+        - com.dubture.doctrine.feature.feature.group
+        - com.dubture.indexing.feature.feature.group
+        - com.dubture.twig.feature.feature.group
+      creates_feature: com.dubture.symfony
+    makegood:
+      repositories:
+        - "http://p2.pdt-extensions.org"
+      install_units:
+        - com.piece_framework.makegood_feature.feature.group
+      creates_feature: com.piece_framework.makegood_feature
+    pti:
+      repositories:
+        - "http://www.phpsrc.org/eclipse/pti/"
+      install_units:
+        - org.phpsrc.eclipse.pti.core.feature.group
+        - org.phpsrc.eclipse.pti.library.pear.feature.group
+        - org.phpsrc.eclipse.pti.tools.codesniffer.feature.group
+        - org.phpsrc.eclipse.pti.tools.phpcpd.feature.group
+        - org.phpsrc.eclipse.pti.tools.phpdepend.feature.group
+        - org.phpsrc.eclipse.pti.tools.phpmd.feature.group
+        - org.phpsrc.eclipse.pti.tools.phpunit.feature.group
+      creates_feature: org.phpsrc.eclipse.pti
+    ebean_enhancer:
+      repositories:
+        - "http://ebean-orm.github.io/eclipse/update"
+      install_units:
+        - com.avaje.ebean.eclipse.feature.group
+      creates_feature: com.avaje.ebean.eclipse
+    statet:
+      repositories:
+        - http://download.walware.de/eclipse-4.5
+      install_units:
+        - de.walware.rj.eclient.feature.group
+        - de.walware.rj.core.feature.group
+        - de.walware.statet.r.feature.group
+        - de.walware.statet.rtm.ftable.feature.group
+        - de.walware.statet.rtm.ggplot.feature.group
+        - de.walware.statet.r.sweave.feature.group
+        - de.walware.statet.redocs.wikitext.r.feature.group
+      creates_feature: de.walware.statet
+    cdtunittests:
+      repositories:
+        - "http://download.eclipse.org/tools/cdt/releases/9.2"
+      install_units:
+        - org.eclipse.cdt.testsrunner.feature.feature.group
+      creates_feature: org.eclipse.cdt.testsrunner
+    atlassian_connector:
+      repositories:
+        - "http://update.atlassian.com/atlassian-eclipse-plugin/rest/nightly/e3.7"
+      install_units:
+        - com.atlassian.connector.eclipse.feature.group
+      creates_feature: com.atlassian.connector
+    jenkins_connector:
+      repositories:
+        - "http://download.eclipse.org/mylyn/releases/latest/"
+      install_units:
+        - org.eclipse.mylyn.hudson.feature.group
+      creates_feature: org.eclipse.mylyn.hudson
+    eclox:
+      repositories:
+        - "http://anb0s.github.io/eclox"
+      install_units:
+        - org.gna.eclox.feature.feature.group
+      creates_feature: org.gna.eclox
+    cppstyle:
+      repositories:
+        - "http://www.cppstyle.com/update"
+      install_units:
+        - org.wangzw.cppstyle.feature.feature.group
+      creates_feature: org.wangzw.cppstyle
+    papyrus:
+      repositories:
+        - "http://download.eclipse.org/modeling/mdt/papyrus/updates/releases/oxygen"
+      install_units:
+        - org.eclipse.papyrus.sdk.feature.feature.group
+      creates_feature: org.eclipse.papyrus.uml
+    jenkinseditor:
+      repositories:
+        - "https://dl.bintray.com/de-jcup/jenkinseditor"
+      install_units:
+        - de.jcup.jenkinseditor.feature.feature.group
+      creates_feature: de.jcup.jenkinseditor.feature
+    dltk_shelled:
+      repositories:
+        - "http://download.eclipse.org/technology/dltk/updates-dev/latest/"
+      install_units:
+        - org.eclipse.dltk.sh.feature.group
+      creates_feature: org.eclipse.dltk.sh
