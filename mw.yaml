@@ -3,3 +3,4 @@
   roles:
     - role: gantsign.maven
     - role: nwoetzel.eclipse
+      eclipse_distro: 2019-09
