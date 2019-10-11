@@ -6,6 +6,7 @@
       maven_version: '3.6.2'
     - role: nwoetzel.eclipse
       eclipse_distro: photon
+      eclipse_plugins_install: []
     - role: geerlingguy.nodejs
       nodejs_version: "10.x"
 
