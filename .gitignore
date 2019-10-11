@@ -1,3 +1,5 @@
 *.retry
 *.swp
 openshift.local.clusterup
+
+.DS_Store
