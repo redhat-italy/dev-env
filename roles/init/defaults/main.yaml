@@ -1,7 +1,8 @@
 ---
-ntp_server: "{{ lookup('env', 'new_ntp') }}"
+ntp_server: "{{ lookup('env', 'new_ntp') | default('time.ien.it'), true) }}"
 rhs_user: "{{ lookup('env', 'rhs_user') }}"
 rhs_pass: "{{ lookup('env', 'rhs_pass') }}"
 domain_nip_io: "{{hostvars[inventory_hostname]['ansible_default_ipv4']['address']}}.nip.io"
 router_suffix: "apps.{{ domain_nip_io }}"
-openshift_version: "{{ lookup('env', 'openshift_version') }}"
+openshift_version: "{{ lookup('env', 'openshift_version') | default('3.11.146', true)}}"
+user: "{{ lookup('env', 'user') | default('sviluppo',true) }}"

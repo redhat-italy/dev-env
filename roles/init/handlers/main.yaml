@@ -3,10 +3,10 @@
   service:
     name: chronyd
     state: restarted
-  tags: ntp,packages,clusterup
+  tags: ntp,packages
 
 - name: restart docker
   service:
     name: docker
     state: restarted
-  tags: docker,packages,clusterup
+  tags: docker,packages

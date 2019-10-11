@@ -1,0 +1,32 @@
+#!/bin/bash
+# THIS FILE IS ADDED FOR COMPATIBILITY PURPOSES
+#
+# It is highly advisable to create own systemd services or udev rules
+# to run scripts during boot instead of using this file.
+#
+# In contrast to previous versions due to parallel execution during boot
+# this script will NOT be run after all other services.
+#
+# Please note that you must run 'chmod +x /etc/rc.d/rc.local' to ensure
+# that this script will be executed during boot.
+
+touch /var/lock/subsys/local
+
+source /tmp/source_vars
+
+if [ ! -d /root/dev-env ]; then
+  git clone $repourl /root/dev-env
+  if [ ! -z $branch ]; then
+    git checkout -b ${branch}
+  fi
+else
+  cd /root/dev-env
+  if [ ! -z $branch ]; then
+    git checkout -b ${branch}
+  fi
+  git pull
+fi
+
+sudo -S -u root -i /bin/bash -l -c 'ansible-playbook -i /root/dev-env/hosts /root/dev-env/install.yaml'
+cp -a /root/.kube /home/{{ user }}/.kube && chown {{ user }}.{{ user }} -R /home/{{ user }}/.kube
+sudo -S -u {{ user }} -i /bin/bash -l -c 'oc login -u system:admin'

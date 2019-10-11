@@ -17,8 +17,8 @@
     for i in $(ls {{ builddir_1['path'] }}/*.addon) ; do sh $i ; done
   tags: addons
 
-#- name: remove temporary directory
-#  file:
-#    path: "{{ builddir_1['path'] }}"
-#    state: absent
-#  tags: addons
+- name: remove temporary directory
+  file:
+    path: "{{ builddir_1['path'] }}"
+    state: absent
+  tags: addons
