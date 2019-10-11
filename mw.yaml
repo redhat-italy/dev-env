@@ -1,4 +1,4 @@
 ---
 - hosts: all
   roles:
-    - test
+    - role: gantsign.maven
