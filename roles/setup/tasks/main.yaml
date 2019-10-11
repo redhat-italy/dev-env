@@ -1,5 +1,5 @@
 ---
 - name: oc cluster up
   shell: |
-    oc cluster up --public-hostname {{ ocp_console }}
+    oc cluster up --public-hostname {{ ocp_console }} --base-dir /root/
   tags: clusterup
