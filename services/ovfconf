@@ -203,11 +203,31 @@ export new_relay=$(get_ovf_var "relay")
 export rhs_user=$(get_ovf_var "rhs_user")
 export rhs_pass=$(get_ovf_var "rhs_pass")
 export openshift_version=$(get_ovf_var "openshift_version")
+export branch=$(get_ovf_var "branch")
+export repourl=$(get_ovf_var "repourl")
 
 echo "export new_ntp=\"$new_ntp\"" > /tmp/source_vars
 echo "export rhs_user=\"$rhs_user\"" >> /tmp/source_vars
 echo "export rhs_pass=\"$rhs_pass\"" >> /tmp/source_vars
 echo "export openshift_version=\"$openshift_version\"" >> /tmp/source_vars
+
+if [ ! -d $HOME/dev-env ]
+then
+  git clone $repourl $HOME/dev-env
+  if [ ! -z $branch ]
+  then
+    git checkout -b ${branch}
+  fi
+else
+  cd $HOME/dev-env
+  if [ ! -z $branch ]
+  then
+    git checkout -b ${branch}
+  fi
+  git pull
+fi
+
+ansible-playbook -i $HOME/dev-env/hosts $HOME/dev-env/install.yaml
 
 ## some checks
 if [[ "X$new_hostname" == "X" ]]; then
@@ -406,6 +426,8 @@ else
   export cur_syslog=$(perl -ne 'print $1 if /^[^#].* \@([^:]+):/'  $syslog_conf)
 fi
 export cur_relay=$(cat $postfix_conf | awk -F'= ' '/^relayhost/ {print $2}')
+
+ansible-playbook -i $HOME/dev-env/hosts $HOME/dev-env/install.yaml
 
 log_msg "INFO: cur name: $cur_hostname.$cur_domain"
 log_msg "INFO: cur ip:   $cur_ip, gw: $cur_gw"

@@ -48,6 +48,9 @@
   - restart docker
   tags: docker,packages,clusterup
 
+- name: flush handlers
+  meta: flush_handlers
+
 - name: enable and start docker service
   service:
     name: docker
