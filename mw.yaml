@@ -9,8 +9,8 @@
       eclipse_plugins_install: []
     - role: geerlingguy.nodejs
       nodejs_version: "10.x"
-    - role: gantsig.intellij
-      
+    - role: gantsign.intellij
+
 
 
 
