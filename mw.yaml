@@ -11,8 +11,3 @@
     - role: geerlingguy.nodejs
       nodejs_version: "10.x"
     - role: gantsign.intellij
-
-
-
-
-    
