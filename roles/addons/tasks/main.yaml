@@ -12,9 +12,15 @@
   with_items: '{{ (role_path + "/files/*/*.addon") | fileglob }}'
   tags: addons
 
+- name: login as system:admin
+  shell: |
+    oc login -u system:admin
+  tags: addons
+
 - name: run addons
   shell: |
     for i in $(ls {{ builddir_1['path'] }}/*.addon) ; do sh $i ; done
+  register: output
   tags: addons
 
 - name: remove temporary directory

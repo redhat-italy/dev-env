@@ -5,3 +5,4 @@
     - init
     - setup
     - addons
+- import_playbook: mw.yaml
