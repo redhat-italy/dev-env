@@ -114,7 +114,7 @@ export_source_vars() {
   echo "export user=\"$user\"" >> $1
 }
 
-set_new_domain() {
+set_new_hostname() {
   new_domain=${new_domain:-$old_domain}
   
   log_msg "NOTE: changing hostname to $new_hostname.$new_domain";
@@ -174,7 +174,7 @@ set_new_network_parameters() {
   fi
 }
 
-set_new_domain_and_dns_parameters() {
+set_new_dns() {
   new_dns1=$(echo $new_dns | awk -F"[, ;]+" '{print $1}')
   new_dns2=$(echo $new_dns | awk -F"[, ;]+" '{print $2}')
   log_msg "NOTE: setting $resolv_conf DNS to $new_dns"
@@ -257,8 +257,9 @@ log_msg "INFO: new ip/prefix:   $new_ip/$new_prefix, gw: $new_gw"
 export_source_vars /tmp/source_vars
 
 [ $old_ip != $new_ip ] || [ $old_gw != $new_gw ] || [ $old_prefix != $new_prefix ] && set_new_network_parameters
+[ $old_hostname != $new_hostname ] && set_new_hostname
 if [[ $new_domain != $old_domain || (! -z $new_dns && $new_dns != $old_dns) ]]; then
-  set_new_domain_and_dns_parameters
+  set_new_dns
 fi
 
 if [[ ! -z $new_ntp && $new_ntp != $old_ntp ]]; then
