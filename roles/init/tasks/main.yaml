@@ -87,15 +87,28 @@
     state: absent
   tags: download
 
-- name: prepare rc-local systemd unit
+- name: check if rc-local.service is updated
   copy:
     src: files/rc-local.service
     dest: /etc/systemd/system/rc-local.service
-  tags: rclocal
+  tags: systemdservices,rclocal
 
-- name: prepare rc-local script
+- name: check if rc.local script is updated
   template:
     src: templates/rc.local.j2
-    dest: /etc/rc.local
-    mode: 0770
-  tags: rclocal
+    dest: /etc/rc.d/rc.local
+    mode: 0755
+  tags: systemdservices,rclocal
+
+- name: check if ovfconf.service is upated
+  copy:
+    src: files/ovfconf.service
+    dest: /etc/systemd/system/ovfconf.service
+  tags: systemdservices,ovfconf
+
+- name: check if ovfconf script is updated
+  copy:
+    src: files/ovfconf
+    dest: /usr/local/sbin/ovfconf
+    mode: 0755
+  tags: systemdservices,ovfconf
