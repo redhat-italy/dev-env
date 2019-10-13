@@ -6,20 +6,12 @@
     password: "{{ rhs_pass }}"
     auto_attach: true
   when: (rhs_user is defined) and (rhs_user|length > 0) and (rhs_pass is defined) and (rhs_pass|length > 0)
-  tags: subscription
+  tags: subscription,clusterup
 
-- name: disable all RHSM repositories
+- name: Disable all repositories except the needed
   rhsm_repository:
-    name: '*'
-    state: disabled
-  tags: subscription
-
-- name: enable needed repositories
-  rhsm_repository:
-    name: "{{ item }}"
-    state: enabled
-  with_items: "['rhel-7-server-rpms', 'rhel-7-server-extras-rpms', 'rhel-7-server-ansible-2.6-rpms']"
-  tags: subscription
+    name: ["rhel-7-server-rpms", "rhel-7-server-extras-rpms", "rhel-7-server-ansible-2.6-rpms"]
+    purge: True
 
 - name: be sure packages are installed
   yum:
@@ -60,7 +52,7 @@
 - name: log into redhat registry and force re-authorization
   shell: |
     docker login -u {{ rhs_user }} -p {{ rhs_pass }} registry.redhat.io
-  tags: docker,packages
+  tags: docker,packages,clusterup
 
 - name: create temporary directory
   tempfile:
