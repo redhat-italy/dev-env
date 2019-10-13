@@ -2,4 +2,5 @@
 - name: oc cluster up
   shell: |
     oc cluster up --public-hostname {{ ocp_console }} --base-dir /root/openshift.local.clusterup/
+  ignore_errors: yes
   tags: clusterup
