@@ -8,10 +8,17 @@
   when: (rhs_user is defined) and (rhs_user|length > 0) and (rhs_pass is defined) and (rhs_pass|length > 0)
   tags: subscription,clusterup
 
-- name: Disable all repositories except the needed
+- name: disable all RHSM repositories
   rhsm_repository:
-    name: ["rhel-7-server-rpms", "rhel-7-server-extras-rpms", "rhel-7-server-ansible-2.6-rpms"]
-    purge: true
+    name: '*'
+    state: disabled
+  tags: subscription,clusterup
+
+- name: enable needed repositories
+  rhsm_repository:
+    name: "{{ item }}"
+    state: enabled
+  with_items: "['rhel-7-server-rpms', 'rhel-7-server-extras-rpms', 'rhel-7-server-ansible-2.6-rpms']"
   tags: subscription,clusterup
 
 - name: be sure packages are installed
