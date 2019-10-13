@@ -10,7 +10,7 @@
 
 - name: Disable all repositories except the needed
   rhsm_repository:
-    name: ["rhel-7-server-rpms", "rhel-7-server-extras-rpms", "rhel-7-server-ansible-2.6-rpms"]
+    name: "rhel-7-server-rpms", "rhel-7-server-extras-rpms", "rhel-7-server-ansible-2.6-rpms"
     purge: True
   tags: subscription,clusterup
 
