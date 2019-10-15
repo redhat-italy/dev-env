@@ -66,26 +66,26 @@
   tempfile:
     state: directory
   register: builddir_1
-  tags: download
+  tags: download,clusterup
 
 - name: download oc client
   get_url:
     url: https://mirror.openshift.com/pub/openshift-v3/clients/{{ openshift_version }}/linux/oc.tar.gz
     dest: "{{ builddir_1['path'] }}/oc.tar.gz"
     mode: '0664'
-  tags: download
+  tags: download,clusterup
 
 - name: extract oc client
   unarchive:
     src: "{{ builddir_1['path'] }}/oc.tar.gz"
     dest: /usr/local/sbin
-  tags: download
+  tags: download,clusterup
 
 - name: remove temporary directory
   file:
     path: "{{ builddir_1['path'] }}"
     state: absent
-  tags: download
+  tags: download,clusterup
 
 - name: check if rc-local.service is updated
   copy:
