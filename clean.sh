@@ -12,4 +12,5 @@ rm -fr /etc/ssh/*key*
 rm -fr ~root/.bash_history
 rm -fr ~root/.ssh/
 rm -fr ~root/anaconda-ks.cfg
+rm -fr ~sviluppo/.mozilla
 find /var/log -type f -exec rm -fr {} \;

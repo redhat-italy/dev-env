@@ -15,15 +15,10 @@ touch /var/lock/subsys/local
 source /tmp/source_vars
 
 if [ ! -d /root/dev-env ]; then
-  git clone $repourl /root/dev-env
-  if [ ! -z $branch ]; then
-    git checkout -b ${branch}
-  fi
+  git clone ${branch} ${repourl} /root/dev-env
 else
   cd /root/dev-env
-  if [ ! -z $branch ]; then
-    git checkout -b ${branch}
-  fi
+  git checkout -b ${branch}
   git pull
 fi
 
