@@ -27,10 +27,9 @@ else
   git pull
 fi
 
+sudo -S -u root -i /bin/bash -l -c 'ansible-playbook -i /root/dev-env/hosts /root/dev-env/install.yaml'
+
 if [ ! -e /root/openshift.local.clusterup/ ]; then
-  sudo -S -u root -i /bin/bash -l -c 'ansible-playbook -i /root/dev-env/hosts /root/dev-env/install.yaml'
   cp -a /root/.kube /home/{{ user }}/.kube && chown {{ user }}.{{ user }} -R /home/{{ user }}/.kube
   sudo -S -u {{ user }} -i /bin/bash -l -c 'oc login -u system:admin'
-else
-  sudo -S -u root -i /bin/bash -l -c 'ansible-playbook -i /root/dev-env/hosts --tags clusterup /root/dev-env/install.yaml'
 fi
