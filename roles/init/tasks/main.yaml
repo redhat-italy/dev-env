@@ -6,20 +6,20 @@
     password: "{{ rhs_pass }}"
     auto_attach: true
   when: (rhs_user is defined) and (rhs_user|length > 0) and (rhs_pass is defined) and (rhs_pass|length > 0)
-  tags: subscription,clusterup
+  tags: subscription
 
 - name: disable all RHSM repositories
   rhsm_repository:
     name: '*'
     state: disabled
-  tags: subscription,clusterup
+  tags: subscription
 
 - name: enable needed repositories
   rhsm_repository:
     name: "{{ item }}"
     state: enabled
   with_items: "['rhel-7-server-rpms', 'rhel-7-server-extras-rpms', 'rhel-7-server-ansible-2.6-rpms']"
-  tags: subscription,clusterup
+  tags: subscription
 
 - name: be sure packages are installed
   yum:
@@ -60,32 +60,32 @@
 - name: log into redhat registry and force re-authorization
   shell: |
     docker login -u {{ rhs_user }} -p {{ rhs_pass }} registry.redhat.io
-  tags: docker,packages,clusterup
+  tags: docker,packages
 
 - name: create temporary directory
   tempfile:
     state: directory
   register: builddir_1
-  tags: download,clusterup
+  tags: download
 
 - name: download oc client
   get_url:
     url: https://mirror.openshift.com/pub/openshift-v3/clients/{{ openshift_version }}/linux/oc.tar.gz
     dest: "{{ builddir_1['path'] }}/oc.tar.gz"
     mode: '0664'
-  tags: download,clusterup
+  tags: download
 
 - name: extract oc client
   unarchive:
     src: "{{ builddir_1['path'] }}/oc.tar.gz"
     dest: /usr/local/sbin
-  tags: download,clusterup
+  tags: download
 
 - name: remove temporary directory
   file:
     path: "{{ builddir_1['path'] }}"
     state: absent
-  tags: download,clusterup
+  tags: download
 
 - name: check if rc-local.service is updated
   copy:
