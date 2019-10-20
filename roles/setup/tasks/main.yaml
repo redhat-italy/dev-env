@@ -7,5 +7,5 @@
 
 - name: oc bash completion
   shell:
-    [ -e /usr/loca/sbin/oc ] && oc completion bash > /etc/profile.d/oc_completion.sh && chmod +x /etc/profile.d/oc_completion.sh
+    if [ -e /usr/local/sbin/oc ]; then oc completion bash > /etc/profile.d/oc_completion.sh && chmod +x /etc/profile.d/oc_completion.sh ; fi
   tags: clusterup
