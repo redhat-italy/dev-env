@@ -24,7 +24,6 @@ fi
 
 sudo -S -u root -i /bin/bash -l -c 'ansible-playbook -i /root/dev-env/hosts /root/dev-env/install.yaml'
 
-if [ -e /root/openshift.local.clusterup/ ] && [ -e /root/.first ]; then
-  cp -a /root/.kube /home/{{ user }}/.kube && chown {{ user }}.{{ user }} -R /home/{{ user }}/.kube
+if [ -e /home/{{ user }}/.kube ]; then
   sudo -S -u {{ user }} -i /bin/bash -l -c 'oc login -u system:admin'
 fi
