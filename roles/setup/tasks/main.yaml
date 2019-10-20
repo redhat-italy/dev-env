@@ -4,3 +4,8 @@
     oc cluster up --public-hostname {{ ocp_console }} --base-dir /root/openshift.local.clusterup/
   ignore_errors: yes
   tags: clusterup
+
+- name: oc bash completion
+  shell:
+    [ -e /usr/loca/sbin/oc ] && oc completion bash > /etc/profile.d/oc_completion.sh && chmod +x /etc/profile.d/oc_completion.sh
+  tags: clusterup
